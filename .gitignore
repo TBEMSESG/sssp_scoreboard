@@ -3,3 +3,5 @@
 .sign/.manifest.tmp
 .sign/author-signature.xml
 .sign/signature1.xml
+.sign/.manifest.tmp
+.sign/author-signature.xml
