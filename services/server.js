@@ -25,9 +25,14 @@ var messageManager = (function () {
       remoteMsgPort.sendMessage([messageData]);
   }
 
+  function sendData (msg) {
+    var messageData = { key: 'data', value: msg };
+    remoteMsgPort.sendMessage(messageData);
+}
+
   function sendMessage (msg, key) {
-      var messageData = { key: key || 'broadcast', value: msg };
-      remoteMsgPort.sendMessage([messageData]);
+      var messageData = { key: key || 'debugInfo', value: msg };
+      remoteMsgPort.sendMessage(messageData);
   }
   function sendData (msg, key) {
     var messageData = { key: key || 'data', value: JSON.stringify(msg) };
@@ -68,7 +73,7 @@ var tcpServer = (function () {
   var PORT = 4000;
 
   function calculateLRC(data) {
-    var lrc = 0;
+    var lrc = 0x00;
     for (var i = 1; i < data.length - 2; i++) {
         lrc ^= data[i];
     }
@@ -109,8 +114,9 @@ function parseMessage(data) {
                   const messageDetails = parseMessage(data);
                   messageManager.sendData(messageDetails);
                   socket.write('Received ' + data.toString('hex'));
+
               } catch (error) {
-                  messageManager.sendMessage('Failed to parse message')
+                  messageManager.sendMessage('Failed to parse message : ' + error.message)
                   socket.write('Failed to parse message');
               }
           });

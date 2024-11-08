@@ -86,6 +86,7 @@ var messageManager = (function () {
   }
 
   function onMessageReceived(data) {
+
     console.log("[onMessageReceived] data: " + JSON.stringify(data));
     test.innerHTML += JSON.stringify(data) + "<br/>";
     
@@ -100,6 +101,7 @@ var messageManager = (function () {
     timeClock.innerHTML = timingData.time
   }
     
+
     if (data[0].value === "started") {
       setTimeout(connectToRemote, 0); //due to performance tuning on Tz7.0 and the CPU priority change, function has to be invoked async
       serviceLaunched = true;
