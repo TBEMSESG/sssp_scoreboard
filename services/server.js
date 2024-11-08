@@ -29,6 +29,10 @@ var messageManager = (function () {
       var messageData = { key: key || 'broadcast', value: msg };
       remoteMsgPort.sendMessage([messageData]);
   }
+  function sendData (msg, key) {
+    var messageData = { key: key || 'data', value: JSON.stringify(msg) };
+    remoteMsgPort.sendMessage([messageData]);
+}
 
   function close () {
       localMsgPort.removeMessagePortListener(listenerId);
@@ -54,7 +58,8 @@ var messageManager = (function () {
   return {
       init: init,
       sendMessage: sendMessage,
-      sendCommand: sendCommand
+      sendCommand: sendCommand,
+      sendData: sendData
   };
 })();
 
@@ -102,7 +107,7 @@ function parseMessage(data) {
             messageManager.sendMessage('Received ' + data.toString('hex'))
               try {
                   const messageDetails = parseMessage(data);
-                  messageManager.sendMessage(messageDetails);
+                  messageManager.sendData(messageDetails);
                   socket.write('Received ' + data.toString('hex'));
               } catch (error) {
                   messageManager.sendMessage('Failed to parse message')
