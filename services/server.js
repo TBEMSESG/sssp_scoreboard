@@ -27,7 +27,7 @@ var messageManager = (function () {
 
   function sendData (msg) {
     var messageData = { key: 'data', value: msg };
-    remoteMsgPort.sendMessage(messageData);
+    remoteMsgPort.sendMessage([messageData]);
 }
 
   function sendMessage (msg, key) {
@@ -102,6 +102,8 @@ function parseMessage(data) {
   }
 
   function startServer () {
+    messageManager.sendMessage('Starting Background tcp server ...')
+
     const net = require('net');
       const server = net.createServer(function (socket) {
           socket.on('data', function (data) {

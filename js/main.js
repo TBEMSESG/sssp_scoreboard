@@ -1,6 +1,6 @@
 var serviceId = "BUfYCvzcdV.SampleBGService";
 var serviceLaunched = false;
-var test, homeScore, guestScore, period, timeClock;
+var test, homeScore, guestScore, period, timeClock, serviceL;
 var temp;
 
 function launchService() {
@@ -46,7 +46,7 @@ var messageManager = (function () {
         serviceId,
         messagePortName
       );
-      messageManager.runHTTPServer(); // Starting HTTP server
+      // messageManager.runHTTPServer(); // Starting HTTP server
   }
 
   function sendTest(msg) {
@@ -71,8 +71,7 @@ var messageManager = (function () {
         value: msg,
       };
     }
-
-    temp = messageData.msg;
+    // temp = messageData.msg;
     console.log(messageData);
     remoteMsgPort.sendMessage([messageData]);
   }
@@ -98,8 +97,11 @@ var messageManager = (function () {
         // test.innerHTML += JSON.stringify(data) + "<br/>";
     }
     if (data[0].value === "started") {
+      console.log("received Started, ConnectingToRemote starts ...")
       setTimeout(connectToRemote, 0); //due to performance tuning on Tz7.0 and the CPU priority change, function has to be invoked async
       serviceLaunched = true;
+      serviceL.innerHTML = "serviceLaunched : " + serviceLaunched
+
     }
 
     if (data[0].value === "terminated") {
@@ -127,6 +129,7 @@ var init = function () {
     guestScore = document.getElementById('guestScore')
     period = document.getElementById('period')
     timeClock = document.getElementById('timeClock')
+    serviceL = document.getElementById('serviceLaunched')
 
 
     timeClock.innerHTML = "waiting for update..."
