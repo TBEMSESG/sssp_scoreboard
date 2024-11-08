@@ -34,6 +34,10 @@ var messageManager = (function () {
       var messageData = { key: key || 'debugInfo', value: msg };
       remoteMsgPort.sendMessage(messageData);
   }
+  function sendData (msg, key) {
+    var messageData = { key: key || 'data', value: JSON.stringify(msg) };
+    remoteMsgPort.sendMessage([messageData]);
+}
 
   function close () {
       localMsgPort.removeMessagePortListener(listenerId);
@@ -106,11 +110,11 @@ function parseMessage(data) {
       const server = net.createServer(function (socket) {
           socket.on('data', function (data) {
             messageManager.sendMessage('Received ' + data.toString('hex'))
-            try {
-                const messageDetails = parseMessage(data);
-            
-                messageManager.sendData(messageDetails.json());
-                socket.write('Received ' + data.toString('hex'));
+              try {
+                  const messageDetails = parseMessage(data);
+                  messageManager.sendData(messageDetails);
+                  socket.write('Received ' + data.toString('hex'));
+
               } catch (error) {
                   messageManager.sendMessage('Failed to parse message : ' + error.message)
                   socket.write('Failed to parse message');

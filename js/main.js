@@ -46,7 +46,7 @@ var messageManager = (function () {
         serviceId,
         messagePortName
       );
-      messageManager.runHTTPServer(); // Starting HTTP server
+      // messageManager.runHTTPServer(); // Starting HTTP server
   }
 
   function sendTest(msg) {
@@ -58,24 +58,24 @@ var messageManager = (function () {
       remoteMsgPort.sendMessage([messageData]);
   }
 
-  function runHTTPServer(msg) {
-    console.log("messageManager.runHTTPServer");
-    if (isEmpty(msg)) {
-      var messageData = {
-        key: "runServer",
-        value: "empty",
-      };
-    } else {
-      var messageData = {
-        key: "runServer",
-        value: msg,
-      };
-    }
+  // function runHTTPServer(msg) {
+  //   console.log("messageManager.runHTTPServer");
+  //   if (isEmpty(msg)) {
+  //     var messageData = {
+  //       key: "runServer",
+  //       value: "empty",
+  //     };
+  //   } else {
+  //     var messageData = {
+  //       key: "runServer",
+  //       value: msg,
+  //     };
+  //   }
 
-    temp = messageData.msg;
-    console.log(messageData);
-    remoteMsgPort.sendMessage([messageData]);
-  }
+  //   temp = messageData.msg;
+  //   console.log(messageData);
+  //   remoteMsgPort.sendMessage([messageData]);
+  // }
 
   function terminate() {
     var messageData = {
@@ -89,14 +89,19 @@ var messageManager = (function () {
 
     console.log("[onMessageReceived] data: " + JSON.stringify(data));
     test.innerHTML += JSON.stringify(data) + "<br/>";
-
+    
     if (data[0].key === "data") {
-        homeScore.innerHTML = data[0].msg.homeScore
-        guestScore.innerHTML = data[0].msg.guestScore
-        period.innerHTML = data[0].msg.period
-        timeClock.innerHTML = data[0].msg.time
-        // test.innerHTML += JSON.stringify(data) + "<br/>";
-    }
+    
+    var timingData = JSON.parse(data[0].value)
+// console.log(timingData)
+// console.log(JSON.stringify(timingData))
+    homeScore.innerHTML = timingData.scoreHome
+    guestScore.innerHTML = timingData.scoreGuest
+    period.innerHTML = timingData.period
+    timeClock.innerHTML = timingData.time
+  }
+    
+
     if (data[0].value === "started") {
       setTimeout(connectToRemote, 0); //due to performance tuning on Tz7.0 and the CPU priority change, function has to be invoked async
       serviceLaunched = true;
@@ -112,7 +117,7 @@ var messageManager = (function () {
     init: init,
     terminate: terminate,
     sendTest: sendTest,
-    runHTTPServer: runHTTPServer,
+    // runHTTPServer: runHTTPServer,
   };
 })();
 
