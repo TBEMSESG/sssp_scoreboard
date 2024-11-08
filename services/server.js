@@ -25,9 +25,14 @@ var messageManager = (function () {
       remoteMsgPort.sendMessage([messageData]);
   }
 
+  function sendData (msg) {
+    var messageData = { key: 'data', value: msg };
+    remoteMsgPort.sendMessage(messageData);
+}
+
   function sendMessage (msg, key) {
-      var messageData = { key: key || 'broadcast', value: msg };
-      remoteMsgPort.sendMessage([messageData]);
+      var messageData = { key: key || 'debugInfo', value: msg };
+      remoteMsgPort.sendMessage(messageData);
   }
 
   function close () {
@@ -54,7 +59,8 @@ var messageManager = (function () {
   return {
       init: init,
       sendMessage: sendMessage,
-      sendCommand: sendCommand
+      sendCommand: sendCommand,
+      sendData: sendData
   };
 })();
 
@@ -63,7 +69,7 @@ var tcpServer = (function () {
   var PORT = 4000;
 
   function calculateLRC(data) {
-    var lrc = 0;
+    var lrc = 0x00;
     for (var i = 1; i < data.length - 2; i++) {
         lrc ^= data[i];
     }
@@ -100,12 +106,13 @@ function parseMessage(data) {
       const server = net.createServer(function (socket) {
           socket.on('data', function (data) {
             messageManager.sendMessage('Received ' + data.toString('hex'))
-              try {
-                  const messageDetails = parseMessage(data);
-                  messageManager.sendMessage(messageDetails);
-                  socket.write('Received ' + data.toString('hex'));
+            try {
+                const messageDetails = parseMessage(data);
+            
+                messageManager.sendData(messageDetails.json());
+                socket.write('Received ' + data.toString('hex'));
               } catch (error) {
-                  messageManager.sendMessage('Failed to parse message')
+                  messageManager.sendMessage('Failed to parse message : ' + error.message)
                   socket.write('Failed to parse message');
               }
           });

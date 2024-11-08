@@ -86,15 +86,17 @@ var messageManager = (function () {
   }
 
   function onMessageReceived(data) {
+
     console.log("[onMessageReceived] data: " + JSON.stringify(data));
     test.innerHTML += JSON.stringify(data) + "<br/>";
 
-    homeScore.innerHTML = data.homeScore
-    guestScore.innerHTML = data.guestScore
-    period.innerHTML = data.period
-    timeClock.innerHTML = data.time
-    // test.innerHTML += JSON.stringify(data) + "<br/>";
-    
+    if (data[0].key === "data") {
+        homeScore.innerHTML = data[0].msg.homeScore
+        guestScore.innerHTML = data[0].msg.guestScore
+        period.innerHTML = data[0].msg.period
+        timeClock.innerHTML = data[0].msg.time
+        // test.innerHTML += JSON.stringify(data) + "<br/>";
+    }
     if (data[0].value === "started") {
       setTimeout(connectToRemote, 0); //due to performance tuning on Tz7.0 and the CPU priority change, function has to be invoked async
       serviceLaunched = true;
