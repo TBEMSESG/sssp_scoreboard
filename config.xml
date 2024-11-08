@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets"
+    id="http://yourdomain/BodedScorePad" version="1.0.0" viewmodes="maximized">
+    <access origin="*" subdomains="true"></access>
+    <tizen:application id="BUfYCvzcdV.BodetApp"
+        package="BUfYCvzcdV" required_version="4.0" />
+    <content src="index.html" />
+    <feature
+        name="http://tizen.org/feature/screen.size.normal.1080.1920" />
+    <icon src="icon.png" />
+    <feature
+        name="http://tizen.org/feature/network.wifi" />
+    <feature
+        name="http://tizen.org/feature/screen.size.all" />
+    <feature
+        name="http://tizen.org/feature/network.push" />
+    <name> BodedScorePad</name>
+    <tizen:privilege
+        name="http://tizen.org/privilege/internet" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/push" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/tv.inputdevice" />
+    <tizen:privilege
+        name="http://developer.samsung.com/privilege/avplay" />
+    <tizen:privilege
+        name="http://developer.samsung.com/privilege/network.public" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/application.launch" />
+    <tizen:privilege
+        name="http://developer.samsung.com/privilege/serialport" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/tv.audio" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/filesystem.read" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/filesystem.write" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/mediastorage" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/externalstorage" />
+    <tizen:privilege
+        name="http://tizen.org/privilege/mediacapture" />
+<tizen:profile name="tv-samsung" />
+<tizen:service
+        id="BUfYCvzcdV.SampleBGService">
+        <tizen:content src="services/server.js" />
+        <tizen:name>SampleBGService</tizen:name>
+        <tizen:description>Service Application</tizen:description>
+        <tizen:metadata key="meta-key" value="meta-value" />
+        <tizen:category name="http://tizen.org/category/service" />
+    </tizen:service>
+    <tizen:setting
+        screen-orientation="landscape" context-menu="enable" background-support="disable"
+        encryption="disable" install-location="auto" hwkey-event="enable" />
+</widget>
