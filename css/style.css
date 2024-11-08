@@ -74,5 +74,70 @@ footer p {
     margin-top: 30px;
 }
 .clock {
-    margin: 50px
+    margin: 50px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-rows: 60px 200px 60px 200px;
+    align-items: center
+}
+
+.title {
+    text-align: center;
+    border: solid 1px gray;
+    background-color: rgba(0, 200, 100, 0.5);
+    padding: 10px 0;
+}
+
+.HStitle {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    text-align: center;
+}
+.GStitle {
+    grid-column-start: 3;
+    grid-row-start: 1;
+    text-align: center;
+
+}
+.PEtitle {
+    grid-column-start: 2;
+    grid-row-start: 3;
+    text-align: right;
+}
+.TItitle {
+    grid-column-start: 1;
+    grid-row-start: 4;
+    text-align: center;
+
+}
+#homeScore {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    text-align: center;
+    font-size: 6em;
+
+}
+
+#guestScore {
+    grid-column-start: 3;
+    grid-row-start: 2;
+    text-align: center;
+    font-size: 6em;
+
+}
+
+#period {
+    grid-column-start: 3;
+    grid-row-start: 3;
+    text-align: left;
+
+}
+#timeClock {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 4;
+    text-align: center;
+    font-size: 8em;
+
+
 }
