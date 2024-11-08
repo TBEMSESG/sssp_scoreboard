@@ -3,7 +3,7 @@
 }
 
 body {
-    margin: 50px auto;
+    margin: 100px auto;
     background-color: #ffffff;
 }
 
@@ -72,4 +72,7 @@ footer p {
     font-size: 36px;
     color: #888;
     margin-top: 30px;
+}
+.clock {
+    margin: 50px
 }

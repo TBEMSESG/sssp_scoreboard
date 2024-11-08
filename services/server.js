@@ -36,12 +36,20 @@ var messageManager = (function () {
 
   function onMessageReceived(data) {
       sendMessage('BG service receive data: ' + JSON.stringify(data));
-
+      
+      // setTimeout(tcpServer.startServer, 0);  // Async invoke
+      
       if (data[0].value === "startTCP") {
-        // setTimeout(tcpServer.startServer, 0);  // Async invoke
-        sendMessage('received startTCP');
+              
+              tcpServer.startServer();
+
+              sendMessage('received startTCP');
+          }
+        
+
+
       }
-  }
+  
 
   return {
       init: init,
@@ -52,70 +60,75 @@ var messageManager = (function () {
 
 // Define the tcpServer globally or within messageManager to avoid scoping issues
 var tcpServer = (function () {
-  const PORT = 4000;
+  var PORT = 4000;
 
   function calculateLRC(data) {
-      let lrc = 0;
-      for (let i = 1; i < data.length - 2; i++) {
-          lrc ^= data[i];
-      }
-      lrc &= 0x7F;
-      if (lrc < 0x20) {
-          lrc += 0x20;
-      }
-      return lrc;
-  }
+    var lrc = 0;
+    for (var i = 1; i < data.length - 2; i++) {
+        lrc ^= data[i];
+    }
+    lrc &= 0x7F;
+    if (lrc < 0x20) {
+        lrc += 0x20;
+    }
+    return lrc;
+}
 
-  function parseMessage (data) {
-      if (data[0] !== 0x01 || data[data.length - 2] !== 0x03) {
-          throw new Error('Invalid message format');
-      }
+function parseMessage(data) {
+    if (data[0] !== 0x01 || data[data.length - 2] !== 0x03) {
+        throw new Error('Invalid message format');
+    }
 
-      const message = data.slice(4, data.length - 2);
-      const calculatedLRC = calculateLRC(data);
-      const receivedLRC = data[data.length - 1];
-      if (calculatedLRC !== receivedLRC) {
-          throw new Error('LRC mismatch. Message may be corrupted');
-      }
+    var message = data.slice(4, data.length - 2);
+    var calculatedLRC = calculateLRC(data);
+    var receivedLRC = data[data.length - 1];
+
+    if (calculatedLRC !== receivedLRC) {
+        throw new Error('LRC mismatch. Message may be corrupted');
+    }
 
       return {
-          time: `${String.fromCharCode(message[4])}${String.fromCharCode(message[5])}:${String.fromCharCode(message[6])}${String.fromCharCode(message[7])}`,
+          time: String.fromCharCode(message[4])+String.fromCharCode(message[5])+':'+ String.fromCharCode(message[6])+String.fromCharCode(message[7]),
           scoreHome: parseInt(String.fromCharCode(message[8]) + String.fromCharCode(message[9]) + String.fromCharCode(message[10])),
           scoreGuest: parseInt(String.fromCharCode(message[11]) + String.fromCharCode(message[12]) + String.fromCharCode(message[13])),
           period: parseInt(String.fromCharCode(message[14]))
       };
   }
 
-  // function startServer () {
-  //   const net = require('node:net');
-  //     const server = net.createServer((socket) => {
-  //         socket.on('data', (data) => {
-  //             try {
-  //                 const messageDetails = parseMessage(data);
-  //                 socket.write(`Received ${JSON.stringify(messageDetails)} (${data.toString('hex')})`);
-  //             } catch (error) {
-  //                 console.error('Failed to parse message:', error.message);
-  //             }
-  //         });
-  //         socket.on('end', () => {
-  //             console.log('Client disconnected');
-  //         });
-  //     });
+  function startServer () {
+    const net = require('net');
+      const server = net.createServer(function (socket) {
+          socket.on('data', function (data) {
+            messageManager.sendMessage('Received ' + data.toString('hex'))
+              try {
+                  const messageDetails = parseMessage(data);
+                  messageManager.sendMessage(messageDetails);
+                  socket.write('Received ' + data.toString('hex'));
+              } catch (error) {
+                  messageManager.sendMessage('Failed to parse message')
+                  socket.write('Failed to parse message');
+              }
+          });
+          socket.on('end', function () {
+              console.log('Client disconnected');
+          });
+      });
 
-  //     server.listen(PORT, () => {
-  //         messageManager.sendMessage(`TCP server listening on port ${PORT}`);
-  //     });
-  // }
+      server.listen(PORT, function () {
+          messageManager.sendMessage('TCP server listening on port' + PORT);
+      });
+  }
 
   return {
-      // startServer: startServer,
-      parseMessage: parseMessage,
-      calculateLRC: calculateLRC
+      startServer: startServer,
+      // parseMessage: parseMessage,
+      // calculateLRC: calculateLRC
   };
 })();
 
 module.exports.onStart = function () {
   messageManager.init();
+  tcpServer.startServer();
 };
 
 module.exports.onRequest = function () {

@@ -1,6 +1,6 @@
 var serviceId = "BUfYCvzcdV.SampleBGService";
 var serviceLaunched = false;
-var test;
+var test, homeScore, guestScore, period, timeClock;
 var temp;
 
 function launchService() {
@@ -89,6 +89,10 @@ var messageManager = (function () {
     console.log("[onMessageReceived] data: " + JSON.stringify(data));
     test.innerHTML += JSON.stringify(data) + "<br/>";
 
+    homeScore.innerHTML = data.homeScore
+    guestScore.innerHTML = data.guestScore
+    period.innerHTML = data.period
+    timeClock.innerHTML = data.time
     // test.innerHTML += JSON.stringify(data) + "<br/>";
     
     if (data[0].value === "started") {
@@ -115,7 +119,15 @@ var messageManager = (function () {
 var init = function () {
     // TODO:: Do your initialization job
     console.log('init() called');
+
     test = document.getElementById("test");
+    homeScore = document.getElementById('homeScore')
+    guestScore = document.getElementById('guestScore')
+    period = document.getElementById('period')
+    timeClock = document.getElementById('timeClock')
+
+
+    timeClock.innerHTML = "waiting for update..."
 
     // document.addEventListener('visibilitychange', function() {
         // if(document.hidden){
