@@ -1,3 +1,6 @@
+// Define the port the tcp server should listen to: 
+var PORT = 4001;
+
 // the following part manages the message Services for Tizen
 var messageManager = (function () {
 
@@ -41,17 +44,6 @@ var messageManager = (function () {
   function onMessageReceived(data) {
       sendMessage('BG service receive data: ' + JSON.stringify(data));
       
-      // setTimeout(tcpServer.startServer, 0);  // Async invoke
-      
-      if (data[0].value === "startTCP") {
-              
-              tcpServer.startServer();
-
-              sendMessage('received startTCP');
-          }
-        
-
-
       }
   
 
@@ -63,9 +55,8 @@ var messageManager = (function () {
   };
 })();
 
-// Define the tcpServer globally or within messageManager to avoid scoping issues
+
 var tcpServer = (function () {
-  var PORT = 4001;
 
   function calculateLRC(data) {
     var lrc = 0;
@@ -101,23 +92,41 @@ function parseMessage(data) {
   }
 
   function startServer () {
+
     const net = require('net');
+
       const server = net.createServer(function (socket) {
           socket.on('data', function (data) {
-            messageManager.sendMessage('Received ' + data.toString('hex'))
+
+            // messageManager.sendMessage('Received ' + data.toString('hex'))
+            
+            if (Buffer.isBuffer(data)) {
               try {
+                messageManager.sendMessage('Is Buffer ...')
+
                   const messageDetails = parseMessage(data);
                   messageManager.sendData(messageDetails);
-                  socket.write('Received ' + data.toString('hex'));
-              } catch (error) {
-                  messageManager.sendMessage('Failed to parse message')
-                  socket.write('Failed to parse message');
+                  
+                  //socket.write('Received ' + data.toString('hex'));
+              } 
+              catch (error) {
+                  messageManager.sendMessage('Failed to parse message' + error.message)
+                  socket.write(error.message);
               }
+            }
+            else {
+                messageManager.sendMessage('not a buffer....')
+ 
+            }
+
           });
 
           socket.on('end', function () {
             messageManager.sendMessage('client disconnected...')
-            console.log('Client disconnected');
+          });
+
+          socket.on('error', function (error) {
+            messageManager.sendMessage('catched an Error...')
           });
       });
 
@@ -151,9 +160,9 @@ module.exports.onRequest = function () {
 };
 
 module.exports.onExit = function () {
-    messageManager.init();
+    // messageManager.init();
     // tcpServer.startServer();
 
-  messageManager.sendMessage("Service is restarting... ");
-  //messageManager.sendCommand("terminated");
+  // messageManager.sendMessage("Service is restarting... ");
+  messageManager.sendCommand("terminated");
 };
