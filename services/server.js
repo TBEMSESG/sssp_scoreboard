@@ -65,7 +65,7 @@ var messageManager = (function () {
 
 // Define the tcpServer globally or within messageManager to avoid scoping issues
 var tcpServer = (function () {
-  var PORT = 4000;
+  var PORT = 4001;
 
   function calculateLRC(data) {
     var lrc = 0;
@@ -115,7 +115,8 @@ function parseMessage(data) {
               }
           });
           socket.on('end', function () {
-              console.log('Client disconnected');
+            messageManager.sendMessage('Failed to parse message')
+            console.log('Client disconnected');
           });
       });
 
@@ -148,7 +149,10 @@ module.exports.onRequest = function () {
   }
 };
 
-module.exports.onExit = function (e) {
-  messageManager.sendMessage("Service is exiting... " + e);
-  messageManager.sendCommand("terminated");
+module.exports.onExit = function () {
+    messageManager.init();
+    // tcpServer.startServer();
+
+  messageManager.sendMessage("Service is restarting... ");
+  //messageManager.sendCommand("terminated");
 };

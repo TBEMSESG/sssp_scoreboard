@@ -58,24 +58,6 @@ var messageManager = (function () {
       remoteMsgPort.sendMessage([messageData]);
   }
 
-  // function runHTTPServer(msg) {
-  //   console.log("messageManager.runHTTPServer");
-  //   if (isEmpty(msg)) {
-  //     var messageData = {
-  //       key: "runServer",
-  //       value: "empty",
-  //     };
-  //   } else {
-  //     var messageData = {
-  //       key: "runServer",
-  //       value: msg,
-  //     };
-  //   }
-
-  //   temp = messageData.msg;
-  //   console.log(messageData);
-  //   remoteMsgPort.sendMessage([messageData]);
-  // }
 
   function terminate() {
     var messageData = {
