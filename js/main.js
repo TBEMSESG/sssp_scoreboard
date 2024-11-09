@@ -2,6 +2,7 @@ var serviceId = "BUfYCvzcdV.SampleBGService";
 var serviceLaunched = false;
 var test, homeScore, guestScore, period, timeClock;
 var temp;
+var logCount = 0
 
 function launchService() {
   // Launch Service
@@ -68,9 +69,16 @@ var messageManager = (function () {
   }
 
   function onMessageReceived(data) {
-    console.log("[onMessageReceived] data: " + JSON.stringify(data));
-    test.innerHTML += JSON.stringify(data) + "<br/>";
+
+    // console.log("[onMessageReceived] data: " + JSON.stringify(data));
     
+    if (logCount >= 40) {
+      logCount = 0
+      test.innerHTML = ""
+    }
+    test.innerHTML += JSON.stringify(data) + "<br/>";
+    logCount++
+
     if (data[0].key === "data") {
     
     var timingData = JSON.parse(data[0].value)

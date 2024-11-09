@@ -114,8 +114,9 @@ function parseMessage(data) {
                   socket.write('Failed to parse message');
               }
           });
+
           socket.on('end', function () {
-            messageManager.sendMessage('Failed to parse message')
+            messageManager.sendMessage('client disconnected...')
             console.log('Client disconnected');
           });
       });

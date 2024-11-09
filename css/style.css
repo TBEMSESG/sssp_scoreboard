@@ -76,7 +76,7 @@ footer p {
 .clock {
     margin: 50px;
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-columns: 4fr 1fr 2fr 2fr 1fr;
     grid-template-rows: 60px 200px 60px 200px;
     align-items: center
 }
@@ -89,29 +89,30 @@ footer p {
 }
 
 .HStitle {
-    grid-column-start: 2;
+    grid-column-start: 3;
     grid-row-start: 1;
     text-align: center;
 }
 .GStitle {
-    grid-column-start: 3;
+    grid-column-start: 4;
     grid-row-start: 1;
     text-align: center;
 
 }
 .PEtitle {
-    grid-column-start: 2;
+    grid-column-start: 3;
     grid-row-start: 3;
     text-align: right;
 }
 .TItitle {
-    grid-column-start: 1;
+    display: none;
+    grid-column-start: 2;
     grid-row-start: 4;
     text-align: center;
 
 }
 #homeScore {
-    grid-column-start: 2;
+    grid-column-start: 3;
     grid-row-start: 2;
     text-align: center;
     font-size: 6em;
@@ -119,7 +120,7 @@ footer p {
 }
 
 #guestScore {
-    grid-column-start: 3;
+    grid-column-start: 4;
     grid-row-start: 2;
     text-align: center;
     font-size: 6em;
@@ -127,17 +128,25 @@ footer p {
 }
 
 #period {
-    grid-column-start: 3;
+    grid-column-start: 4;
     grid-row-start: 3;
     text-align: left;
 
 }
 #timeClock {
-    grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-start: 3;
+    grid-column-end: 5;
     grid-row-start: 4;
     text-align: center;
     font-size: 8em;
+}
 
-
+#test {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    text-align: left;
+    padding-left: 10px;
+    justify-content: baseline;
 }
