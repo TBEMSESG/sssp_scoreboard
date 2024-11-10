@@ -8,8 +8,9 @@ Runs on Tizen B2B Displays with Tizen 4.0 up to Tizen 8.0.
 
 This app runs a simple scoreboard frontend with a background service application. The backend listens to a tcp connection from the Boded ScorePad, to show the current scores for Home and Guest teams, the current Period, and the current Time.
 
-!!! Note The app is hardcoded for IceHockey only, eventhough the scorePad could provide a lot of other sports too.
-!!! Info Data parsing for other sports might be added later. 
+>[!Note] The app is hardcoded for IceHockey only, eventhough the scorePad could provide a lot of other sports too.
+
+>[!Info] Data parsing for other sports might be added later. 
 
 The SSSP app only runs with a Boded ScorePad TCP Output. The messages are given and the parsing is not changable without changing the code. 
 
