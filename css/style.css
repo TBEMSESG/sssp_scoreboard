@@ -3,7 +3,7 @@
 }
 
 body {
-    margin: 100px auto;
+    margin: 20px auto;
     background-color: #ffffff;
 }
 
@@ -78,7 +78,7 @@ footer p {
     display: grid;
     grid-template-columns: 4fr 1fr 2fr 2fr 1fr;
     grid-template-rows: 60px 200px 60px 200px;
-    align-items: center
+    align-items: center;
 }
 
 .title {
@@ -139,6 +139,8 @@ footer p {
     grid-row-start: 4;
     text-align: center;
     font-size: 8em;
+    background-color: #cdfffe81;
+
 }
 
 #test {
@@ -149,4 +151,13 @@ footer p {
     text-align: left;
     padding-left: 10px;
     justify-content: baseline;
+}
+
+.deviceInfo {
+    border: solid 1px gray;
+    margin: 0 50px;
+    font-size: xx-large;
+    padding: 10px 0;
+    text-align: center;
+    background-color: #cdfffe;
 }

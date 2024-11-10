@@ -1,6 +1,7 @@
 // Define the port the tcp server should listen to: 
 var PORT = 4001;
 
+
 // the following part manages the message Services for Tizen
 var messageManager = (function () {
 
@@ -21,6 +22,7 @@ var messageManager = (function () {
       listenerId = localMsgPort.addMessagePortListener(onMessageReceived);
 
       sendCommand("started");
+      sendMessage(PORT, 'deviceInfo' )
   }
 
   function sendCommand (msg) {

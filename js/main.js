@@ -3,6 +3,13 @@ var serviceLaunched = false;
 var test, homeScore, guestScore, period, timeClock;
 var temp;
 var logCount = 0
+var device = {
+  ipAddress: "unknown...",
+  modelCode: "unknown...",
+  firmwareVersion: "unknown...",
+  listenerPort: "unknown... (try default: 4001)"
+}
+var deviceInfo
 
 function launchService() {
   // Launch Service
@@ -95,6 +102,13 @@ var messageManager = (function () {
       serviceLaunched = true;
     }
 
+    if (data[0].key === "deviceInfo") {
+      device.listenerPort = data[0].value 
+      deviceInfo.innerHTML = `Device IP: <b>${device.ipAddress}</b> // Listening on PORT: <b>${device.listenerPort}</b> <br/>Device Model Code: <b>${device.modelCode}</b> running Firmware Version: <b>${device.firmwareVersion}</b>`
+
+    
+    }
+
     if (data[0].value === "terminated") {
       localMsgPort.removeMessagePortListener(watchId);
       serviceLaunched = false;
@@ -120,7 +134,7 @@ var init = function () {
     guestScore = document.getElementById('guestScore')
     period = document.getElementById('period')
     timeClock = document.getElementById('timeClock')
-
+    deviceInfo = document.querySelector('.deviceInfo')
 
     timeClock.innerHTML = "waiting for update..."
 
@@ -131,7 +145,7 @@ var init = function () {
         //     // Something you want to do when resume.
         // }
     // });
- 
+
     // add eventListener for keydown
     document.addEventListener('keydown', function(e) {
     	switch(e.keyCode){
@@ -155,6 +169,17 @@ var init = function () {
     	}
     });
 
+    try {
+      device.ipAddress = webapis.network.getIp();
+      device.firmwareVersion = webapis.productinfo.getFirmware()
+      device.modelCode = webapis.productinfo.getRealModel();
+      deviceInfo.innerHTML = `Device IP: <b>${device.ipAddress}</b> // Listening on PORT: <b>${device.listenerPort}</b> // Device Model Code: <b>${device.modelCode}</b> running Firmware Version: <b>${device.firmwareVersion}</b>`
+    } catch (e) {
+      console.log("getIp exception [" + e.code + "] name: " + e.name + " message: " + e.message);
+    }
+    
+    
+    
     messageManager.init();
     launchService();
     //setTimeout(function() {}, 5000);
