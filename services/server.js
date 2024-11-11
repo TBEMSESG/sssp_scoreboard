@@ -1,5 +1,7 @@
+
 // Define the port the tcp server should listen to: 
 var PORT = 4001;
+var httpPORT = 3000;
 
 
 // the following part manages the message Services for Tizen
@@ -23,6 +25,7 @@ var messageManager = (function () {
 
       sendCommand("started");
       sendMessage(PORT, 'deviceInfo' )
+      // startHttpServer() //This starts an http server to provide Settings or informations. Not used yet
   }
 
   function sendCommand (msg) {
@@ -137,12 +140,65 @@ function parseMessage(data) {
       });
   }
 
+
+
   return {
       startServer: startServer,
+      startHttpServer: startHttpServer,
       // parseMessage: parseMessage,
       // calculateLRC: calculateLRC
   };
 })();
+
+
+function startHttpServer () {
+  var http = require('http');
+
+var htmlData= `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter a Value</title>
+</head>
+<body>
+
+    <h2>Current PORT = ${PORT}</h2>
+
+    <!-- HTML Form -->
+    <form action="/submit" method="POST">
+        <label for="value">Enter a new PORT number:</label>
+        <input type="text" id="value" name="value" required>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>`
+  var httpServer = http.createServer((req, res) => {
+    // Serve the HTML page for the root path
+    if (req.url === '/') {
+        
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(htmlData); // Send HTML content as response
+        ;
+    } else {
+        // Handle 404 for other routes
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('404 Not Found');
+    }
+});
+
+// Start the server
+httpServer.listen(httpPORT, () => {
+    messageManager.sendMessage('Server is running on http://localhost:' +httpPORT);
+
+});
+}  
+
+
+
 
 module.exports.onStart = function () {
   messageManager.init();

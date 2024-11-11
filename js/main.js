@@ -11,6 +11,7 @@ var device = {
 }
 var deviceInfo
 
+
 function launchService() {
   // Launch Service
   tizen.application.launchAppControl(
@@ -124,6 +125,8 @@ var messageManager = (function () {
 })();
 
 
+
+
 //Initialize function
 var init = function () {
     // TODO:: Do your initialization job
@@ -146,25 +149,36 @@ var init = function () {
         // }
     // });
 
+    tizen.tvinputdevice.registerKey('Info')
+    
     // add eventListener for keydown
     document.addEventListener('keydown', function(e) {
     	switch(e.keyCode){
     	case 37: //LEFT arrow
+      console.log('Key code : ' + e.keyCode);
     		break;
     	case 38: //UP arrow
+      console.log('Key code : ' + e.keyCode);
     		break;
+      case 457: //INFO Button
+      console.log('Key code (INFO): ' + e.keyCode);
+        break;
     	case 39: //RIGHT arrow
+      console.log('Key code : ' + e.keyCode);
     		break;
     	case 40: //DOWN arrow
+      console.log('Key code : ' + e.keyCode);
     		break;
     	case 13: //OK button
-            console.log("Pressed OK-...")
+      console.log("Pressed OK-...")
+      console.log('Key code : ' + e.keyCode);
     		break;
     	case 10009: //RETURN button
-		tizen.application.getCurrentApplication().exit();
+	      	  tizen.application.getCurrentApplication().exit();
     		break;
     	default:
-    		console.log('Key code : ' + e.keyCode);
+            // test.innerHTML += 'Key code : ' + e.keyCode + '<br/>' 	
+            console.log('Key code : ' + e.keyCode);
     		break;
     	}
     });
