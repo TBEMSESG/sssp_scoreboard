@@ -161,3 +161,7 @@ footer p {
     text-align: center;
     background-color: #cdfffe;
 }
+
+.hidden {
+    display: none
+}

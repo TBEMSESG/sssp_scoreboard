@@ -1,6 +1,6 @@
 
 // Define the port the tcp server should listen to: 
-var PORT = 4001;
+var PORT = 4004;
 var httpPORT = 3000;
 
 

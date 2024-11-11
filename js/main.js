@@ -7,7 +7,8 @@ var device = {
   ipAddress: "unknown...",
   modelCode: "unknown...",
   firmwareVersion: "unknown...",
-  listenerPort: "unknown... (try default: 4001)"
+  listenerPort: "unknown... (try default: 4001)",
+  appVersion: "unknown"
 }
 var deviceInfo
 
@@ -105,7 +106,7 @@ var messageManager = (function () {
 
     if (data[0].key === "deviceInfo") {
       device.listenerPort = data[0].value 
-      deviceInfo.innerHTML = `Device IP: <b>${device.ipAddress}</b> // Listening on PORT: <b>${device.listenerPort}</b> <br/>Device Model Code: <b>${device.modelCode}</b> running Firmware Version: <b>${device.firmwareVersion}</b>`
+      deviceInfo.innerHTML += `<br/>Application Version: <b>${device.appVersion.appInfo.version}</b><br/><br/>Device IP: <b>${device.ipAddress}</b> // Listening on PORT: <b>${device.listenerPort}</b> <br/>Device Model Code: <b>${device.modelCode}</b> running Firmware Version: <b>${device.firmwareVersion}</b><br/><br/>Press <b>INFO</b> to toggle this Window`
 
     
     }
@@ -139,7 +140,7 @@ var init = function () {
     timeClock = document.getElementById('timeClock')
     deviceInfo = document.querySelector('.deviceInfo')
 
-    timeClock.innerHTML = "waiting for update..."
+    timeClock.innerHTML = "..."
 
     // document.addEventListener('visibilitychange', function() {
         // if(document.hidden){
@@ -162,6 +163,7 @@ var init = function () {
     		break;
       case 457: //INFO Button
       console.log('Key code (INFO): ' + e.keyCode);
+      deviceInfo.classList.toggle('hidden')
         break;
     	case 39: //RIGHT arrow
       console.log('Key code : ' + e.keyCode);
@@ -187,7 +189,9 @@ var init = function () {
       device.ipAddress = webapis.network.getIp();
       device.firmwareVersion = webapis.productinfo.getFirmware()
       device.modelCode = webapis.productinfo.getRealModel();
-      deviceInfo.innerHTML = `Device IP: <b>${device.ipAddress}</b> // Listening on PORT: <b>${device.listenerPort}</b> // Device Model Code: <b>${device.modelCode}</b> running Firmware Version: <b>${device.firmwareVersion}</b>`
+      device.appVersion = tizen.application.getCurrentApplication()
+      // deviceInfo.innerHTML = `Device IP: <b>${device.ipAddress}</b> // Listening on PORT: <b>${device.listenerPort}</b> // Device Model Code: <b>${device.modelCode}</b> running Firmware Version: <b>${device.firmwareVersion}</b>. Press <b>INFO</b> to hide this window.`
+ 
     } catch (e) {
       console.log("getIp exception [" + e.code + "] name: " + e.name + " message: " + e.message);
     }

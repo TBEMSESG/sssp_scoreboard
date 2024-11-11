@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets"
-    id="http://yourdomain/BodedScorePad" version="1.0.0" viewmodes="maximized">
+    id="http://yourdomain/BodedScorePad" version="1.0.3" viewmodes="maximized">
     <access origin="*" subdomains="true"></access>
     <tizen:application id="BUfYCvzcdV.BodetApp"
         package="BUfYCvzcdV" required_version="4.0" />
@@ -28,6 +28,8 @@
     <tizen:privilege
         name="http://tizen.org/privilege/application.launch" />
     <tizen:privilege
+        name="http://tizen.org/privilege/application.info" />
+    <tizen:privilege
         name="http://developer.samsung.com/privilege/serialport" />
     <tizen:privilege
         name="http://tizen.org/privilege/tv.audio" />
@@ -38,7 +40,7 @@
     <tizen:privilege
         name="http://tizen.org/privilege/mediastorage" />
     <tizen:privilege
-        name="http://tizen.org/privilege/externalstorage" />
+        name="http://developer.samsung.com/privilege/widgetdata" />
     <tizen:privilege
         name="http://developer.samsung.com/privilege/productinfo" />
 <tizen:profile name="tv-samsung" />
